@@ -1,0 +1,24 @@
+# dependencies & builds (no trailing slash: also matches the node_modules links manual/run.sh creates)
+node_modules
+dist/
+
+# secrets – never commit (keys, tokens, passphrase)
+.env
+.env.*
+!.env.example
+manual/manual.env
+
+# bot data – encrypted wallet keys, trade history, logs
+data/
+data-*/
+*.db
+*.db-wal
+*.db-shm
+*.log
+
+# local tooling
+.DS_Store
+.claude/settings.local.json
+
+# database backups downloaded from the server
+backups/

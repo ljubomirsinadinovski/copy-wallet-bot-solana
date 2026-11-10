@@ -1,0 +1,30 @@
+# Unattended mode. On the server this is driven by deploy/remote-deploy.sh (auto-deploy on push to main).
+# Manually:           GIT_SHA=$(git rev-parse --short HEAD) docker compose up -d --build
+# Live logs:          docker compose logs -f bot
+# After editing .env: docker compose up -d   (a plain `restart` does not reload .env)
+services:
+  bot:
+    build:
+      context: .
+      args:
+        GIT_SHA: ${GIT_SHA:-dev}
+    # One image per commit, so a rollback can reuse the previous image without rebuilding.
+    image: copy-wallet:${GIT_SHA:-dev}
+    container_name: copy-wallet
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    environment:
+      # Fixed inside the container; the host port below follows PORT from .env.
+      HOST: 0.0.0.0
+      PORT: "8787"
+      DATA_DIR: /app/data
+      LOG_PRETTY: "true"
+    ports:
+      # Only reachable from this machine. Use `tailscale serve` for private access – never a public port.
+      - "127.0.0.1:${PORT:-8787}:8787"
+    volumes:
+      # Wallet keys, history and logs live here, outside the image.
+      - ./data:/app/data
+    # Safe restarts: the bot finishes copies in progress (up to 20 s) before exiting.
+    stop_grace_period: 40s

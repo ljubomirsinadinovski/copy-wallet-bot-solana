@@ -1,0 +1,35 @@
+{
+  "name": "copy-wallet",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.7.1",
+  "scripts": {
+    "dev": "concurrently -n server,web -c cyan,magenta --kill-others-on-fail \"pnpm -F server dev\" \"pnpm -F web dev\"",
+    "dev:debug": "concurrently -n server,web -c cyan,magenta \"pnpm -F server dev:debug\" \"pnpm -F web dev\"",
+    "build": "pnpm -F web build && pnpm -F server build",
+    "start": "pnpm -F server start",
+    "test": "pnpm -F server test",
+    "typecheck": "pnpm -r typecheck",
+    "server:status": "bash scripts/server.sh status",
+    "server:logs": "bash scripts/server.sh logs",
+    "server:follow": "bash scripts/server.sh follow",
+    "server:db": "bash scripts/server.sh db",
+    "server:deploys": "bash scripts/server.sh deploys",
+    "server:backup": "bash scripts/server.sh backup",
+    "server:restart": "bash scripts/server.sh restart",
+    "server:ssh": "bash scripts/server.sh ssh",
+    "server:reload": "bash scripts/server.sh reload"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "bigint-buffer",
+      "bufferutil",
+      "esbuild",
+      "utf-8-validate"
+    ]
+  }
+}

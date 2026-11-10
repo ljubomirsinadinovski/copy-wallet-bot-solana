@@ -1,0 +1,4 @@
+/* The main app's styles. This folder is git-ignored, so Tailwind is told explicitly where to look. */
+@import '../../../web/src/index.css';
+@source '../../../web/src/components';
+@source './';

@@ -1,0 +1,1 @@
+ALTER TABLE `copy_trades` ADD `recovery` text;
